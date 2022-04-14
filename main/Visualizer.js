@@ -72,7 +72,7 @@ class Visualizer {
     this.overlayCanvas.width = this.canvas.width;
     this.overlayCanvas.height = this.canvas.height;
 
-    this.fontSizePx = (12 * window.devicePixelRatio) | 0;
+    this.fontSizePx = (2 * window.devicePixelRatio) | 0;
     var context = this.canvas.getContext("2d");
     context.textBaseline = "top";
     context.font = "" + this.fontSizePx + "px Arial";
@@ -94,7 +94,7 @@ class Visualizer {
     // redraw density contours
     this.drawDensityContours();
     // redraw histogram
-    this.drawHistograms();
+    // this.drawHistograms();
     this.render();
   }
   render() {
@@ -220,7 +220,7 @@ class Visualizer {
     context.arc(
       center[0],
       center[1],
-      options.radius * this.scale,
+      options.radius * this.scale * 5,
       options.start || 0,
       options.end || 2 * Math.PI,
       false

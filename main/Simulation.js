@@ -225,12 +225,12 @@ window.onload = function () {
     }
     let config = [
       ["delay", parseInt, sim, "sim"],
-      ["tweeningDelay", parseInt, sim, "sim"],
+      // ["tweeningDelay", parseInt, sim, "sim"],
       ["autoplay", parseBool, sim, "sim"],
       ["animateProposal", parseBool, viz, "viz"],
       ["showSamples", parseBool, viz, "viz"],
-      ["showHistograms", parseBool, viz, "viz"],
-      ["histBins", parseInt, viz, "viz"],
+      // ["showHistograms", parseBool, viz, "viz"],
+      // ["histBins", parseInt, viz, "viz"],
     ];
     for (let i = 0; i < config.length; i++) {
       let param = config[i][0],

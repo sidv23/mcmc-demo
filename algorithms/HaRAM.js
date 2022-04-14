@@ -1,10 +1,10 @@
 "use strict";
 
-MCMC.registerAlgorithm("HamiltonianMC", {
-  description: "Hamiltonian Monte Carlo",
+MCMC.registerAlgorithm("HaRAM", {
+  description: "Hamiltonian Repelling-Attracting Metropolis",
 
   about: () => {
-    window.open("https://en.wikipedia.org/wiki/Hybrid_Monte_Carlo");
+    window.open("https://sidvishwanath.com");
   },
 
   init: (self) => {
