@@ -17,7 +17,7 @@ class Visualizer {
     this.showTargetDensity = true;
     this.animateProposal = true;
     this.tweening = false;
-    this.showHistograms = true;
+    this.showHistograms = false;
 
     this.arrowSize = 10;
     this.proposalColor = "#999";
