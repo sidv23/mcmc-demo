@@ -159,31 +159,67 @@ MCMC.targets["funnel"] = {
   },
 };
 
-// Squiggle distribution
-const squiggleDist = new MultivariateNormal(
-  matrix([[0], [0]]),
+// // Squiggle distribution
+// const squiggleDist = new MultivariateNormal(
+//   matrix([[0], [0]]),
+//   matrix([
+//     [2, 0.25],
+//     [0.25, 0.5],
+//   ])
+// );
+// MCMC.targetNames.push("squiggle");
+// MCMC.targets["squiggle"] = {
+//   xmin: -6,
+//   xmax: 6,
+//   logDensity: (x) => {
+//     const y = zeros(2, 1);
+//     y[0] = x[0];
+//     y[1] = x[1] + Math.sin(5 * x[0]);
+//     return squiggleDist.logDensity(y);
+//   },
+//   gradLogDensity: (x) => {
+//     const y = zeros(2, 1);
+//     y[0] = x[0];
+//     y[1] = x[1] + Math.sin(5 * x[0]);
+//     const grad = squiggleDist.gradLogDensity(y);
+//     const gradx0 = grad[0] + grad[1] * 5 * Math.cos(5 * x[0]);
+//     const gradx1 = grad[1];
+//     grad[0] = gradx0;
+//     grad[1] = gradx1;
+//     return grad;
+//   },
+// };
+
+
+// Banana distribution
+var bananaDist = new MultivariateNormal(
+  matrix([[0], [4]]),
   matrix([
-    [2, 0.25],
-    [0.25, 0.5],
+    [1, 0.5],
+    [0.5, 1],
   ])
 );
-MCMC.targetNames.push("squiggle");
-MCMC.targets["squiggle"] = {
+MCMC.targetNames.push("banana");
+MCMC.targets["banana"] = {
   xmin: -6,
   xmax: 6,
   logDensity: (x) => {
+    const a = 2,
+      b = 0.2;
     const y = zeros(2, 1);
-    y[0] = x[0];
-    y[1] = x[1] + Math.sin(5 * x[0]);
-    return squiggleDist.logDensity(y);
+    y[0] = x[0] / a;
+    y[1] = x[1] * a + a * b * (x[0] * x[0] + a * a);
+    return bananaDist.logDensity(y);
   },
   gradLogDensity: (x) => {
+    const a = 2,
+      b = 0.2;
     const y = zeros(2, 1);
-    y[0] = x[0];
-    y[1] = x[1] + Math.sin(5 * x[0]);
-    const grad = squiggleDist.gradLogDensity(y);
-    const gradx0 = grad[0] + grad[1] * 5 * Math.cos(5 * x[0]);
-    const gradx1 = grad[1];
+    y[0] = x[0] / a;
+    y[1] = x[1] * a + a * b * (x[0] * x[0] + a * a);
+    const grad = bananaDist.gradLogDensity(y);
+    const gradx0 = grad[0] / a + grad[1] * a * b * 2 * x[0];
+    const gradx1 = grad[1] * a;
     grad[0] = gradx0;
     grad[1] = gradx1;
     return grad;
