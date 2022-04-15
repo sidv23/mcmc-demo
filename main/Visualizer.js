@@ -113,10 +113,10 @@ class Visualizer {
       context.drawImage(this.samplesCanvas, 0, 0);
     }
     // draw histogram canvases
-    if (this.showHistograms) {
-      context.drawImage(this.xHistCanvas, 0, this.canvas.height - this.xHistCanvas.height);
-      context.drawImage(this.yHistCanvas, 0, 0);
-    }
+    // if (this.showHistograms) {
+    //   context.drawImage(this.xHistCanvas, 0, this.canvas.height - this.xHistCanvas.height);
+    //   context.drawImage(this.yHistCanvas, 0, 0);
+    // }
     // draw overlay canvas
     context.drawImage(this.overlayCanvas, 0, 0);
   }
@@ -211,7 +211,7 @@ class Visualizer {
   }
   drawCircle(canvas, options) {
     var context = canvas.getContext("2d");
-    context.lineWidth = options.lw ? options.lw * window.devicePixelRatio : 1 * window.devicePixelRatio;
+    context.lineWidth = options.lw ? options.lw * window.devicePixelRatio : 2 * window.devicePixelRatio;
     context.strokeStyle = options.color ? options.color : "rgb(0,0,0)";
     context.globalAlpha = options.alpha ? options.alpha : 1;
     var center = this.transform(options.center);
@@ -220,7 +220,7 @@ class Visualizer {
     context.arc(
       center[0],
       center[1],
-      options.radius * this.scale * 5,
+      options.radius * this.scale * 10,
       options.start || 0,
       options.end || 2 * Math.PI,
       false
@@ -236,9 +236,9 @@ class Visualizer {
   }
   drawPath(canvas, options) {
     var context = canvas.getContext("2d");
-    context.lineWidth = options.lw ? options.lw * window.devicePixelRatio : 1 * window.devicePixelRatio;
+    context.lineWidth = options.lw ? options.lw * 2 * window.devicePixelRatio : 1 * window.devicePixelRatio;
     context.strokeStyle = options.color ? options.color : "rgb(0,0,0)";
-    context.globalAlpha = options.alpha ? options.alpha : 1;
+    context.globalAlpha = options.alpha ? 2 * options.alpha : 1;
     var offset = options.offset ? options.offset : 0;
     var path = options.path;
     var start = this.transform(path[0]);
