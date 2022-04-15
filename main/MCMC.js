@@ -34,8 +34,8 @@ var bananaDist = new MultivariateNormal(
 );
 MCMC.targetNames.push("banana");
 MCMC.targets["banana"] = {
-  xmin: -6,
-  xmax: 6,
+  xmin: -10,
+  xmax: 10,
   logDensity: (x) => {
     const a = 2,
       b = 0.2;
@@ -159,48 +159,49 @@ MCMC.targets["funnel"] = {
   },
 };
 
-// // Squiggle distribution
-// const squiggleDist = new MultivariateNormal(
-//   matrix([[0], [0]]),
-//   matrix([
-//     [2, 0.25],
-//     [0.25, 0.5],
-//   ])
-// );
-// MCMC.targetNames.push("squiggle");
-// MCMC.targets["squiggle"] = {
-//   xmin: -6,
-//   xmax: 6,
-//   logDensity: (x) => {
-//     const y = zeros(2, 1);
-//     y[0] = x[0];
-//     y[1] = x[1] + Math.sin(5 * x[0]);
-//     return squiggleDist.logDensity(y);
-//   },
-//   gradLogDensity: (x) => {
-//     const y = zeros(2, 1);
-//     y[0] = x[0];
-//     y[1] = x[1] + Math.sin(5 * x[0]);
-//     const grad = squiggleDist.gradLogDensity(y);
-//     const gradx0 = grad[0] + grad[1] * 5 * Math.cos(5 * x[0]);
-//     const gradx1 = grad[1];
-//     grad[0] = gradx0;
-//     grad[1] = gradx1;
-//     return grad;
-//   },
-// };
+// Squiggle distribution
+const squiggleDist = new MultivariateNormal(
+  matrix([[0], [0]]),
+  matrix([
+    [2, 0.25],
+    [0.25, 0.5],
+  ])
+);
+MCMC.targetNames.push("squiggle");
+MCMC.targets["squiggle"] = {
+  xmin: -6,
+  xmax: 6,
+  logDensity: (x) => {
+    const y = zeros(2, 1);
+    y[0] = x[0];
+    y[1] = x[1] + Math.sin(5 * x[0]);
+    return squiggleDist.logDensity(y);
+  },
+  gradLogDensity: (x) => {
+    const y = zeros(2, 1);
+    y[0] = x[0];
+    y[1] = x[1] + Math.sin(5 * x[0]);
+    const grad = squiggleDist.gradLogDensity(y);
+    const gradx0 = grad[0] + grad[1] * 5 * Math.cos(5 * x[0]);
+    const gradx1 = grad[1];
+    grad[0] = gradx0;
+    grad[1] = gradx1;
+    return grad;
+  },
+};
 
 
 // Banana distribution
-var bananaDist = new MultivariateNormal(
-  matrix([[0], [4]]),
+var bananaDist2 = new MultivariateNormal(
+  matrix([[-2], [0]]),
   matrix([
     [1, 0.5],
     [0.5, 1],
   ])
 );
-MCMC.targetNames.push("banana");
-MCMC.targets["banana"] = {
+
+MCMC.targetNames.push("doublebanana");
+MCMC.targets["doublebanana"] = {
   xmin: -6,
   xmax: 6,
   logDensity: (x) => {
@@ -223,5 +224,30 @@ MCMC.targets["banana"] = {
     grad[0] = gradx0;
     grad[1] = gradx1;
     return grad;
+  },
+};
+
+
+MCMC.targetNames.push("multimodal");
+MCMC.targets["multimodal"] = {
+  xmin: -6,
+  xmax: 6,
+  logDensity: (x) => {
+    return Math.log(
+      Math.exp(mixtureComponents[0].logDensity(x)) +
+        Math.exp(mixtureComponents[1].logDensity(x)) +
+        Math.exp(mixtureComponents[2].logDensity(x))
+    );
+  },
+  gradLogDensity: (x) => {
+    const p1 = Math.exp(mixtureComponents[0].logDensity(x));
+    const p2 = Math.exp(mixtureComponents[1].logDensity(x));
+    const p3 = Math.exp(mixtureComponents[2].logDensity(x));
+    return mixtureComponents[0]
+      .gradLogDensity(x)
+      .scale(p1)
+      .add(mixtureComponents[1].gradLogDensity(x).scale(p2))
+      .add(mixtureComponents[2].gradLogDensity(x).scale(p3))
+      .scale(1 / (p1 + p2 + p3));
   },
 };
