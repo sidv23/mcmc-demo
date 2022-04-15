@@ -220,7 +220,7 @@ class Visualizer {
     context.arc(
       center[0],
       center[1],
-      options.radius * this.scale * 10,
+      options.radius * this.scale * 7,
       options.start || 0,
       options.end || 2 * Math.PI,
       false

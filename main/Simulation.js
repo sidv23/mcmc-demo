@@ -286,19 +286,19 @@ window.onload = function () {
   f1.add(sim, "reset").name("Reset");
   f1.open();
 
-  var f2 = gui.addFolder("Visualization Options");
-  f2.add(viz, "animateProposal").name("Animate proposal").listen();
-  f2.add(viz, "showTargetDensity").name("Show target");
-  f2.add(viz, "showSamples").name("Show samples");
-  f2.add(viz, "showHistograms").name("Show histogram");
-  f2.add(viz, "histBins", 20, 200)
-    .step(1)
-    .name("Histogram bins")
-    .onChange(function (value) {
-      viz.drawHistograms();
-      viz.render();
-    });
-  f2.open();
+  // var f2 = gui.addFolder("Visualization Options");
+  // f2.add(viz, "animateProposal").name("Animate proposal").listen();
+  // f2.add(viz, "showTargetDensity").name("Show target");
+  // f2.add(viz, "showSamples").name("Show samples");
+  // f2.add(viz, "showHistograms").name("Show histogram");
+  // f2.add(viz, "histBins", 20, 200)
+  //   .step(1)
+  //   .name("Histogram bins")
+  //   .onChange(function (value) {
+  //     viz.drawHistograms();
+  //     viz.render();
+  //   });
+  // f2.open();
 
   gui.removeFolder("Algorithm Options");
   var f3 = gui.addFolder("Algorithm Options");
