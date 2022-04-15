@@ -8,8 +8,8 @@ class Simulation {
       hasTarget: false,
       dim: 2,
     };
-    this.delay = 250;
-    this.tweeningDelay = 0;
+    this.delay = 1200;
+    this.tweeningDelay = 20;
     this.autoplay = true;
   }
   setAlgorithm(algorithmName) {
@@ -271,19 +271,19 @@ window.onload = function () {
     .onChange(function (value) {
       sim.setTarget(value);
     });
-  f1.add(sim, "autoplay").name("Autoplay");
-  f1.add(sim, "delay", 0, 1000)
-    .name("Autoplay delay")
-    .onChange(function (value) {
-      if (value == 0) {
-        viz.animateProposal = false;
-      } else {
-        viz.animateProposal = true;
-      }
-    });
-  f1.add(sim, "tweeningDelay", 0, 200).name("Tweening delay");
+  // f1.add(sim, "autoplay").name("Autoplay");
+  // f1.add(sim, "delay", 0, 2000)
+  //   .name("Autoplay delay")
+  //   .onChange(function (value) {
+  //     if (value == 0) {
+  //       viz.animateProposal = false;
+  //     } else {
+  //       viz.animateProposal = true;
+  //     }
+  //   });
+  // f1.add(sim, "tweeningDelay", 0, 100).name("Tweening delay");
   f1.add(sim, "step").name("Step");
-  f1.add(sim, "reset").name("Reset");
+  // f1.add(sim, "reset").name("Reset");
   f1.open();
 
   // var f2 = gui.addFolder("Visualization Options");
@@ -303,7 +303,7 @@ window.onload = function () {
   gui.removeFolder("Algorithm Options");
   var f3 = gui.addFolder("Algorithm Options");
   sim.mcmc.attachUI(sim.mcmc, f3);
-  f3.add(sim.mcmc, "about").name("About this algorithm");
+  // f3.add(sim.mcmc, "about").name("About this algorithm");
   f3.open();
 
   sim.animate();

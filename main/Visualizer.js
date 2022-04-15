@@ -16,7 +16,7 @@ class Visualizer {
     this.showSamples = true;
     this.showTargetDensity = true;
     this.animateProposal = true;
-    this.tweening = false;
+    this.tweening = true;
     this.showHistograms = false;
 
     this.arrowSize = 10;
