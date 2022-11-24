@@ -8,8 +8,8 @@ MCMC.registerAlgorithm("HaRAM", {
   },
   
   init: (self) => {
-    self.leapfrogSteps = 20;
-    self.dt = 0.5;
+    self.leapfrogSteps = 37;
+    self.dt = 0.1;
     self.gamma = 0.1;
   },
   
