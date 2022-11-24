@@ -8,8 +8,8 @@ class Visualizer {
 
     this.queue = []; // events for visualization
 
-    this.xmin = -7; // in coordinate-space
-    this.xmax = 7; // ymin, ymax set according to canvas aspect ratio
+    this.xmin = -10; // in coordinate-space
+    this.xmax = 10; // ymin, ymax set according to canvas aspect ratio
     this.xOffset = 0; // world coordinates of the center of the screen
     this.yOffset = 0; // world coordinates of the center of the screen
 
