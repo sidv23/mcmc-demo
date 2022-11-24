@@ -9,7 +9,7 @@ MCMC.registerAlgorithm("HaRAM", {
   
   init: (self) => {
     self.leapfrogSteps = 37;
-    self.dt = 0.1;
+    self.dt = 0.2;
     self.gamma = 0.1;
   },
   
@@ -34,7 +34,9 @@ MCMC.registerAlgorithm("HaRAM", {
     // const exp_invgamma = gamma ** -1;
     const q = q0.copy();
     const p = p0.copy();
-    const trajectory = [q.copy()];
+    const trajectory = [ q.copy() ];
+    
+    // dot = (a, b) => a.map((x, i) => a[ i ] * b[ i ]).reduce((m, n) => m + n);
     
     for (let i = 0; i < self.leapfrogSteps; i++) {
       p.
@@ -46,7 +48,15 @@ MCMC.registerAlgorithm("HaRAM", {
       increment(self.gradLogDensity(q).scale(self.dt / 2));
       trajectory.push(q.copy());
     }
-    
+
+    // Reflect
+    p.
+      increment(self.gradLogDensity(q).
+        scale(-2).
+        scale(p.dot(self.gradLogDensity(q))).
+        scale(self.gradLogDensity(q).dot(self.gradLogDensity(q)) ** -1)
+      );
+
     for (let i = 0; i < self.leapfrogSteps; i++) {
       p.
       increment(p.scale(1 - exp_gamma)).
