@@ -8,8 +8,8 @@ class Visualizer {
 
     this.queue = []; // events for visualization
 
-    this.xmin = -10; // in coordinate-space
-    this.xmax = 10; // ymin, ymax set according to canvas aspect ratio
+    this.xmin = -7; // in coordinate-space
+    this.xmax = 7; // ymin, ymax set according to canvas aspect ratio
     this.xOffset = 0; // world coordinates of the center of the screen
     this.yOffset = 0; // world coordinates of the center of the screen
 
@@ -19,7 +19,7 @@ class Visualizer {
     this.tweening = true;
     this.showHistograms = false;
 
-    this.arrowSize = 10;
+    this.arrowSize = 20;
     this.proposalColor = "#999";
     this.trajectoryColor = "#333";
     this.acceptColor = "#4c4";
@@ -112,11 +112,6 @@ class Visualizer {
     if (this.showSamples) {
       context.drawImage(this.samplesCanvas, 0, 0);
     }
-    // draw histogram canvases
-    // if (this.showHistograms) {
-    //   context.drawImage(this.xHistCanvas, 0, this.canvas.height - this.xHistCanvas.height);
-    //   context.drawImage(this.yHistCanvas, 0, 0);
-    // }
     // draw overlay canvas
     context.drawImage(this.overlayCanvas, 0, 0);
   }
@@ -127,88 +122,7 @@ class Visualizer {
     transformed[1] = this.origin[1] - this.scale * (x[1] - this.yOffset);
     return transformed;
   }
-  drawHistograms(options) {
-    if (!this.simulation.mcmc.initialized) return;
-    var chain = this.simulation.mcmc.chain;
-    var has_weights = this.simulation.mcmc.hasOwnProperty("chain_weights");
-    // this.histBins = Math.min(125, Math.floor(chain.length / 50) + 10);
-    this.xbins = linspace(this.xmin, this.xmax, this.histBins);
-    this.ybins = linspace(this.ymin, this.ymax, this.histBins);
-    this.xhist = new Uint16Array(this.histBins);
-    this.yhist = new Uint16Array(this.histBins);
-    for (var i = 0; i < chain.length; ++i) {
-      var x, y;
-      var weight = 1;
-      var x = chain[i][0];
-      var y = chain[i][1];
-      if (has_weights) {
-        weight = this.simulation.mcmc.chain_weights[i] * chain.length;
-      }
-
-      var xind = ((x - this.xmin) / (this.xmax - this.xmin)) * this.histBins;
-      if (xind > 0 && xind < this.histBins) this.xhist[xind | 0] += weight;
-      var yind = ((y - this.ymin) / (this.ymax - this.ymin)) * this.histBins;
-      if (yind > 0 && yind < this.histBins) this.yhist[yind | 0] += weight;
-    }
-    var xmax = 0,
-      ymax = 0;
-    for (var i = 0; i < this.histBins; ++i) {
-      if (this.xhist[i] > xmax) xmax = this.xhist[i];
-      if (this.yhist[i] > ymax) ymax = this.yhist[i];
-    }
-
-    this.xHistCanvas.getContext("2d").clearRect(0, 0, this.xHistCanvas.width, this.xHistCanvas.height);
-    this.yHistCanvas.getContext("2d").clearRect(0, 0, this.yHistCanvas.width, this.yHistCanvas.height);
-
-    // draw x histogram
-    var context = this.xHistCanvas.getContext("2d");
-    context.globalAlpha = 0.3;
-    context.fillStyle = this.histFillStyle;
-    var dx = (1 / this.histBins) * this.xHistCanvas.width;
-    for (var i = 0; i < this.histBins; ++i) {
-      var x = (i / this.histBins) * this.xHistCanvas.width;
-      var y = (1.0 / xmax) * this.xhist[i] * this.xHistCanvas.height;
-      context.fillRect(x, this.xHistCanvas.height, dx, -y);
-    }
-
-    // draw y histogram
-    var context = this.yHistCanvas.getContext("2d");
-    context.globalAlpha = 0.3;
-    context.fillStyle = this.histFillStyle;
-    var dy = (1 / this.histBins) * this.yHistCanvas.height;
-    for (var i = 0; i < this.histBins; ++i) {
-      var y = (1 - i / this.histBins) * this.yHistCanvas.height;
-      var x = (1.0 / ymax) * this.yhist[i] * this.yHistCanvas.width;
-      context.fillRect(0, y, x, -dy);
-    }
-
-    // draw marginals
-    var context = this.xHistCanvas.getContext("2d");
-    context.strokeStyle = this.histFillStyle;
-    context.lineWidth = 1 * window.devicePixelRatio;
-    var xgrid = this.simulation.mcmc.xgrid;
-    var xmarg = this.simulation.mcmc.marginals[0];
-    context.beginPath();
-    context.moveTo(0, this.xHistCanvas.height);
-    for (var i = 1; i < xgrid.length; ++i) {
-      var x = xgrid[i] * this.scale + this.origin[0];
-      context.lineTo(x, (1 - 0.97 * xmarg[i]) * this.xHistCanvas.height);
-    }
-    context.stroke();
-
-    var context = this.yHistCanvas.getContext("2d");
-    context.strokeStyle = this.histFillStyle;
-    context.lineWidth = 1 * window.devicePixelRatio;
-    var ygrid = this.simulation.mcmc.ygrid;
-    var ymarg = this.simulation.mcmc.marginals[1];
-    context.beginPath();
-    context.moveTo(0, 0);
-    for (var i = 1; i < xgrid.length; ++i) {
-      var y = this.origin[1] - this.scale * ygrid[i];
-      context.lineTo(ymarg[i] * this.yHistCanvas.width * 0.97, y);
-    }
-    context.stroke();
-  }
+  drawHistograms(options) {}
   drawCircle(canvas, options) {
     var context = canvas.getContext("2d");
     context.lineWidth = options.lw ? options.lw * window.devicePixelRatio : 2 * window.devicePixelRatio;
@@ -267,7 +181,7 @@ class Visualizer {
   }
   drawArrow(canvas, options) {
     var context = canvas.getContext("2d");
-    context.lineWidth = options.lw ? options.lw * window.devicePixelRatio : 1 * window.devicePixelRatio;
+    context.lineWidth = options.lw ? options.lw * 5 * window.devicePixelRatio : 1 * window.devicePixelRatio;
     context.strokeStyle = options.color ? options.color : "rgb(0,0,0)";
     context.globalAlpha = options.alpha ? options.alpha : 1;
     var arrowScale = options.arrowScale ? options.arrowScale : 1;
@@ -326,7 +240,7 @@ class Visualizer {
           from: last,
           to: to,
           color: this.proposalColor,
-          lw: 1,
+          lw: 2,
         });
       }
 
@@ -523,14 +437,15 @@ class Visualizer {
       var path = [event.trajectory[event.offset], event.trajectory[event.offset + 1]];
       this.drawPath(this.overlayCanvas, {
         path: path,
+        center: event.trajectory[ event.offset + 1 ],
         color: this.trajectoryColor,
-        lw: 1,
+        lw: 2.5,
       });
       // this.drawArrow(this.overlayCanvas, {from: event.trajectory[event.offset], to: event.trajectory[event.offset + 1], color: this.trajectoryColor, lw: 0.5, arrowScale: 0.8, alpha: 0.8 });
       this.drawCircle(this.overlayCanvas, {
         fill: this.trajectoryColor,
         center: event.trajectory[event.offset + 1],
-        radius: 0.02,
+        radius: 0.005,
         lw: 0,
       });
     }

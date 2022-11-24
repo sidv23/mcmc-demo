@@ -28,16 +28,16 @@ const MCMC = {
 // Mixture distribution with three components
 const mixtureComponents = [
   // new MultivariateNormal(matrix([ [ -1.5 ], [ -1.5 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ -4.5 ], [ -4.5 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ 2.5 ], [ 2.5 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ -3 ], [ 4 ] ]), eye(2).scale(0.5)),
-  new MultivariateNormal(matrix([ [ 4 ], [ -4 ] ]), eye(2).scale(0.5)),
+  new MultivariateNormal(matrix([ [ -3 ], [ -3 ] ]), eye(2).scale(0.8)),
+  new MultivariateNormal(matrix([ [ 2 ], [ 2 ] ]), eye(2).scale(0.8)),
+  new MultivariateNormal(matrix([ [ -3 ], [ 2 ] ]), eye(2).scale(0.5)),
+  new MultivariateNormal(matrix([ [ 2 ], [ -3 ] ]), eye(2).scale(0.5)),
 ];
 
 MCMC.targetNames.push("multimodal");
 MCMC.targets[ "multimodal" ] = {
-  xmin: -10,
-  xmax: 10,
+  xmin: -7,
+  xmax: 7,
   logDensity: (x) => {
     return Math.log(
       Math.exp(mixtureComponents[ 0 ].logDensity(x)) +
