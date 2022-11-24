@@ -36,8 +36,8 @@ const mixtureComponents = [
 
 MCMC.targetNames.push("multimodal");
 MCMC.targets[ "multimodal" ] = {
-  xmin: -7,
-  xmax: 7,
+  xmin: -10,
+  xmax: 10,
   logDensity: (x) => {
     return Math.log(
       Math.exp(mixtureComponents[ 0 ].logDensity(x)) +
@@ -78,8 +78,8 @@ if (!Array.prototype.last) {
 MCMC.targetNames.push("standard");
 const dist = new MultivariateNormal(zeros(2, 1), eye(2));
 MCMC.targets[ "standard" ] = {
-  xmin: -6,
-  xmax: 6,
+  xmin: -10,
+  xmax: 10,
   logDensity: (x) => {
     return dist.logDensity(x);
   },

@@ -8,8 +8,8 @@ class Visualizer {
 
     this.queue = []; // events for visualization
 
-    this.xmin = -10; // in coordinate-space
-    this.xmax = 10; // ymin, ymax set according to canvas aspect ratio
+    this.xmin = -100; // in coordinate-space
+    this.xmax = 100; // ymin, ymax set according to canvas aspect ratio
     this.xOffset = 0; // world coordinates of the center of the screen
     this.yOffset = 0; // world coordinates of the center of the screen
 
@@ -437,15 +437,16 @@ class Visualizer {
       var path = [event.trajectory[event.offset], event.trajectory[event.offset + 1]];
       this.drawPath(this.overlayCanvas, {
         path: path,
-        center: event.trajectory[ event.offset + 1 ],
+        center: event.trajectory[ event.offset + 2 ],
         color: this.trajectoryColor,
         lw: 2.5,
+        radius: 2.5,
       });
       // this.drawArrow(this.overlayCanvas, {from: event.trajectory[event.offset], to: event.trajectory[event.offset + 1], color: this.trajectoryColor, lw: 0.5, arrowScale: 0.8, alpha: 0.8 });
       this.drawCircle(this.overlayCanvas, {
         fill: this.trajectoryColor,
         center: event.trajectory[event.offset + 1],
-        radius: 0.005,
+        radius: 0.003,
         lw: 0,
       });
     }
