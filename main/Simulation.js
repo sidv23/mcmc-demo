@@ -225,7 +225,7 @@ window.onload = function () {
     }
     let config = [
       ["delay", parseInt, sim, "sim"],
-      // ["tweeningDelay", parseInt, sim, "sim"],
+      ["tweeningDelay", parseInt, sim, "sim"],
       ["autoplay", parseBool, sim, "sim"],
       ["animateProposal", parseBool, viz, "viz"],
       ["showSamples", parseBool, viz, "viz"],
@@ -271,19 +271,19 @@ window.onload = function () {
     .onChange(function (value) {
       sim.setTarget(value);
     });
-  // f1.add(sim, "autoplay").name("Autoplay");
-  // f1.add(sim, "delay", 0, 2000)
-  //   .name("Autoplay delay")
-  //   .onChange(function (value) {
-  //     if (value == 0) {
-  //       viz.animateProposal = false;
-  //     } else {
-  //       viz.animateProposal = true;
-  //     }
-  //   });
-  // f1.add(sim, "tweeningDelay", 0, 100).name("Tweening delay");
+  f1.add(sim, "autoplay").name("Autoplay");
+  f1.add(sim, "delay", 0, 2000)
+    .name("Autoplay delay")
+    .onChange(function (value) {
+      if (value == 0) {
+        viz.animateProposal = false;
+      } else {
+        viz.animateProposal = true;
+      }
+    });
+  f1.add(sim, "tweeningDelay", 0, 100).name("Tweening delay");
   f1.add(sim, "step").name("Step");
-  // f1.add(sim, "reset").name("Reset");
+  f1.add(sim, "reset").name("Reset");
   f1.open();
 
   // var f2 = gui.addFolder("Visualization Options");

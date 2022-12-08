@@ -85,6 +85,7 @@ class Visualizer {
     // clear the queue
     this.queue = [];
     // stop tweening
+    // this.tweening = true;
     this.tweening = false;
     // clear offscreen and onscreen canvases
     this.densityCanvas.getContext("2d").clearRect(0, 0, this.densityCanvas.width, this.densityCanvas.height);

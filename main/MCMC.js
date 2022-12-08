@@ -47,15 +47,17 @@ MCMC.targets[ "multimodal" ] = {
     );
   },
   gradLogDensity: (x) => {
-    const p1 = Math.exp(mixtureComponents[ 0 ].logDensity(x));
-    const p2 = Math.exp(mixtureComponents[ 1 ].logDensity(x));
-    const p3 = Math.exp(mixtureComponents[ 2 ].logDensity(x));
+    const p0 = Math.exp(mixtureComponents[ 0 ].logDensity(x));
+    const p1 = Math.exp(mixtureComponents[ 1 ].logDensity(x));
+    const p2 = Math.exp(mixtureComponents[ 2 ].logDensity(x));
+    const p3 = Math.exp(mixtureComponents[ 3 ].logDensity(x));
     return mixtureComponents[ 0 ]
       .gradLogDensity(x)
-      .scale(p1)
-      .add(mixtureComponents[ 1 ].gradLogDensity(x).scale(p2))
-      .add(mixtureComponents[ 2 ].gradLogDensity(x).scale(p3))
-      .scale(1 / (p1 + p2 + p3));
+      .scale(p0)
+      .add(mixtureComponents[ 1 ].gradLogDensity(x).scale(p1))
+      .add(mixtureComponents[ 2 ].gradLogDensity(x).scale(p2))
+      .add(mixtureComponents[ 3 ].gradLogDensity(x).scale(p3))
+      .scale(1 / (p0 + p1 + p2 + p3));
   },
 };
 // fillin to get last element of array
