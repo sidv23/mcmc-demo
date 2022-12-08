@@ -25,6 +25,21 @@ const MCMC = {
 };
 
 
+
+// Bivariate normal distribution with no correlation
+MCMC.targetNames.push("standard");
+const dist = new MultivariateNormal(zeros(2, 1), eye(2));
+MCMC.targets[ "standard" ] = {
+  xmin: -10,
+  xmax: 10,
+  logDensity: (x) => {
+    return dist.logDensity(x);
+  },
+  gradLogDensity: (x) => {
+    return dist.gradLogDensity(x);
+  },
+};
+
 // Mixture distribution with three components
 const mixtureComponents = [
   // new MultivariateNormal(matrix([ [ -1.5 ], [ -1.5 ] ]), eye(2).scale(0.8)),
@@ -67,28 +82,6 @@ if (!Array.prototype.last) {
   };
 }
 
-
-
-
-
-
-
-
-
-
-// Bivariate normal distribution with no correlation
-MCMC.targetNames.push("standard");
-const dist = new MultivariateNormal(zeros(2, 1), eye(2));
-MCMC.targets[ "standard" ] = {
-  xmin: -10,
-  xmax: 10,
-  logDensity: (x) => {
-    return dist.logDensity(x);
-  },
-  gradLogDensity: (x) => {
-    return dist.gradLogDensity(x);
-  },
-};
 
 
 
