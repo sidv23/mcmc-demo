@@ -1,7 +1,7 @@
 "use strict";
 
-MCMC.registerAlgorithm("HaRAM", {
-  description: "Hamiltonian Repelling-Attracting Metropolis",
+MCMC.registerAlgorithm("RA-HMC", {
+  description: "Repelling-Attracting Hamiltonian Monte Carlo",
   
   about: () => {
     window.open("https://sidvishwanath.com");
