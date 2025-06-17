@@ -8,7 +8,7 @@ class Simulation {
       hasTarget: false,
       dim: 2,
     };
-    this.delay = 1200;
+    this.delay = 200;
     this.tweeningDelay = 20;
     this.autoplay = true;
   }
@@ -272,7 +272,7 @@ window.onload = function () {
       sim.setTarget(value);
     });
   f1.add(sim, "autoplay").name("Autoplay");
-  f1.add(sim, "delay", 0, 2000)
+  f1.add(sim, "delay", 0, 200)
     .name("Autoplay delay")
     .onChange(function (value) {
       if (value == 0) {
@@ -281,7 +281,7 @@ window.onload = function () {
         viz.animateProposal = true;
       }
     });
-  f1.add(sim, "tweeningDelay", 0, 100).name("Tweening delay");
+  f1.add(sim, "tweeningDelay", 0, 50).name("Tweening delay");
   f1.add(sim, "step").name("Step");
   f1.add(sim, "reset").name("Reset");
   f1.open();
