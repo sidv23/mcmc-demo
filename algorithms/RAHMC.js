@@ -28,6 +28,7 @@ MCMC.registerAlgorithm("RA-HMC", {
     const q0 = self.chain.last();
     const p0 = MultivariateNormal.getSample(self.dim);
 
+    const gamma = self.gamma * (0.9 + 0.5 * Math.random());
     const dt = self.dt * (0.9 + 0.5 * Math.random());
     const leapfrogSteps = Math.max(
       1,

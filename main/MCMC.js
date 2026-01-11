@@ -26,33 +26,10 @@ const MCMC = {
 
 
 
-// Bivariate normal distribution with no correlation
-MCMC.targetNames.push("standard");
-const dist = new MultivariateNormal(zeros(2, 1), eye(2));
-MCMC.targets[ "standard" ] = {
-  xmin: -5,
-  xmax: 5,
-  logDensity: (x) => {
-    return dist.logDensity(x);
-  },
-  gradLogDensity: (x) => {
-    return dist.gradLogDensity(x);
-  },
-};
-
-// Mixture distribution with three components
-const mixtureComponents = [
-  // new MultivariateNormal(matrix([ [ -1.5 ], [ -1.5 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ -3 ], [ -3 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ 2 ], [ 2 ] ]), eye(2).scale(0.8)),
-  new MultivariateNormal(matrix([ [ -3 ], [ 2 ] ]), eye(2).scale(0.5)),
-  new MultivariateNormal(matrix([ [ 2 ], [ -3 ] ]), eye(2).scale(0.5)),
-];
-
 MCMC.targetNames.push("multimodal");
 MCMC.targets[ "multimodal" ] = {
-  xmin: -5,
-  xmax: 5,
+  xmin: -7,
+  xmax: 7,
   logDensity: (x) => {
     return Math.log(
       Math.exp(mixtureComponents[ 0 ].logDensity(x)) +
@@ -84,6 +61,29 @@ if (!Array.prototype.last) {
 
 
 
+
+// Bivariate normal distribution with no correlation
+MCMC.targetNames.push("standard");
+const dist = new MultivariateNormal(zeros(2, 1), eye(2));
+MCMC.targets[ "standard" ] = {
+  xmin: -3,
+  xmax: 3,
+  logDensity: (x) => {
+    return dist.logDensity(x);
+  },
+  gradLogDensity: (x) => {
+    return dist.gradLogDensity(x);
+  },
+};
+
+// Mixture distribution with three components
+const mixtureComponents = [
+  // new MultivariateNormal(matrix([ [ -1.5 ], [ -1.5 ] ]), eye(2).scale(0.8)),
+  new MultivariateNormal(matrix([ [ -3 ], [ -3 ] ]), eye(2).scale(0.3)),
+  new MultivariateNormal(matrix([ [ 2 ], [ 2 ] ]), eye(2).scale(0.4)),
+  new MultivariateNormal(matrix([ [ -3 ], [ 2 ] ]), eye(2).scale(0.35)),
+  new MultivariateNormal(matrix([ [ 2 ], [ -3 ] ]), eye(2).scale(0.35)),
+];
 
 
 
