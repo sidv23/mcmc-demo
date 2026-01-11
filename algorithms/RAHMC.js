@@ -27,10 +27,16 @@ MCMC.registerAlgorithm("RA-HMC", {
   step: (self, visualizer) => {
     const q0 = self.chain.last();
     const p0 = MultivariateNormal.getSample(self.dim);
+
+    const dt = self.dt * (0.9 + 0.5 * Math.random());
+    const leapfrogSteps = Math.max(
+      1,
+      Math.round(self.leapfrogSteps * (0.9 + 0.2 * Math.random()))
+    );
     
     // use leapfrog integration to find proposal
-    const exp_gamma = 2.71828 ** (self.gamma * self.dt / 2);
-    const exp_invgamma = 2.71828 ** (-self.gamma * self.dt / 2);
+    const exp_gamma = 2.71828 ** (self.gamma * dt / 2);
+    const exp_invgamma = 2.71828 ** (-self.gamma * dt / 2);
     // const exp_invgamma = gamma ** -1;
     const q = q0.copy();
     const p = p0.copy();
@@ -38,14 +44,14 @@ MCMC.registerAlgorithm("RA-HMC", {
     
     // dot = (a, b) => a.map((x, i) => a[ i ] * b[ i ]).reduce((m, n) => m + n);
     
-    for (let i = 0; i < self.leapfrogSteps; i++) {
+    for (let i = 0; i < leapfrogSteps; i++) {
       p.
       increment(p.scale(1 - exp_invgamma)).
-      increment(self.gradLogDensity(q).scale(self.dt / 2));
-      q.increment(p.scale(self.dt));
+      increment(self.gradLogDensity(q).scale(dt / 2));
+      q.increment(p.scale(dt));
       p.
       increment(p.scale(1 - exp_invgamma)).
-      increment(self.gradLogDensity(q).scale(self.dt / 2));
+      increment(self.gradLogDensity(q).scale(dt / 2));
       trajectory.push(q.copy());
     }
 
@@ -57,14 +63,14 @@ MCMC.registerAlgorithm("RA-HMC", {
         scale(self.gradLogDensity(q).dot(self.gradLogDensity(q)) ** -1)
       );
 
-    for (let i = 0; i < self.leapfrogSteps; i++) {
+    for (let i = 0; i < leapfrogSteps; i++) {
       p.
       increment(p.scale(1 - exp_gamma)).
-      increment(self.gradLogDensity(q).scale(self.dt / 2));
-      q.increment(p.scale(self.dt));
+      increment(self.gradLogDensity(q).scale(dt / 2));
+      q.increment(p.scale(dt));
       p.
       increment(p.scale(1 - exp_gamma)).
-      increment(self.gradLogDensity(q).scale(self.dt / 2));
+      increment(self.gradLogDensity(q).scale(dt / 2));
       trajectory.push(q.copy());
     }
     
